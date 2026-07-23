@@ -9,9 +9,7 @@
     --bg:#0f1220; --panel:#181c30; --panel2:#1f2440; --ink:#e9ecf7;
     --muted:#9aa3c4; --line:#2c3358;
     --on:#f4c04a; --onglow:rgba(244,192,74,.55);
-    --happy:#37d67a; --happybg:rgba(55,214,122,.13);
-    --sad:#ff6b81; --sadbg:rgba(255,107,129,.12);
-    --accent:#7c9dff;
+    --happy:#37d67a; --bright:#5bffab; --sad:#ff6b81; --accent:#7c9dff;
   }
   *{box-sizing:border-box}
   html,body{margin:0;padding:0}
@@ -19,31 +17,24 @@
     background:radial-gradient(1200px 700px at 50% -10%,#1b2140,#0f1220 60%);
     color:var(--ink);
     font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
-    min-height:100vh; padding:16px 14px 60px;
-    -webkit-text-size-adjust:100%;
+    min-height:100vh; padding:16px 14px 60px; -webkit-text-size-adjust:100%;
   }
-  .wrap{max-width:820px;margin:0 auto}
+  .wrap{max-width:900px;margin:0 auto}
   header{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:8px}
-  h1{font-size:24px;margin:0;letter-spacing:.3px}
+  h1{font-size:23px;margin:0}
   h1 .sub{display:block;font-size:11px;font-weight:500;color:var(--muted);letter-spacing:.6px;text-transform:uppercase;margin-top:4px}
   .controls{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
-  select,button{
-    font:inherit;color:var(--ink);background:var(--panel2);border:1px solid var(--line);
-    border-radius:10px;padding:9px 12px;cursor:pointer;transition:.15s;-webkit-tap-highlight-color:transparent;
-  }
+  select,button{font:inherit;color:var(--ink);background:var(--panel2);border:1px solid var(--line);
+    border-radius:10px;padding:9px 12px;cursor:pointer;transition:.12s;-webkit-tap-highlight-color:transparent}
   button:hover,select:hover{border-color:var(--accent)}
   button.primary{background:linear-gradient(180deg,#8aa6ff,#6f8dff);border-color:#6f8dff;color:#0f1220;font-weight:700}
-  button.primary:active{filter:brightness(.95)}
+  button:disabled{opacity:.35;cursor:default}
 
-  /* sticky status bar — solved + timer + counters, always visible */
   .topbar{position:sticky;top:0;z-index:30;margin:0 -14px 12px;padding:10px 14px;
-    background:rgba(15,18,32,.86);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
-    border-bottom:1px solid var(--line)}
+    background:rgba(15,18,32,.86);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
   .stats{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
-  .pill{padding:8px 13px;border-radius:999px;background:var(--panel2);border:1px solid var(--line);
-    font-size:14px;font-weight:600;white-space:nowrap}
-  .pill b{color:var(--accent)}
-  .pill.time b{font-variant-numeric:tabular-nums}
+  .pill{padding:8px 13px;border-radius:999px;background:var(--panel2);border:1px solid var(--line);font-size:14px;font-weight:600;white-space:nowrap}
+  .pill b{color:var(--accent)} .pill.time b{font-variant-numeric:tabular-nums}
   .win{display:none;align-items:center;gap:10px;margin-bottom:10px;
     background:linear-gradient(180deg,rgba(55,214,122,.28),rgba(55,214,122,.08));
     border:1px solid var(--happy);color:#d6ffe6;padding:12px 16px;border-radius:12px;font-weight:700;font-size:15px}
@@ -51,64 +42,72 @@
   @keyframes pop{from{transform:scale(.97);opacity:0}to{transform:scale(1);opacity:1}}
   .win .star{font-size:20px;filter:drop-shadow(0 0 6px rgba(55,214,122,.7))}
 
-  .card{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:14px 14px 16px}
-  .card h2{margin:0 0 12px;font-size:12px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);font-weight:600}
-
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:14px 12px 16px}
+  .card h2{margin:0 0 10px;font-size:12px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);font-weight:600}
   .boardscroll{overflow-x:auto;overflow-y:hidden;padding-bottom:6px;-webkit-overflow-scrolling:touch}
-  .board{display:grid;gap:6px;align-items:stretch;min-width:min-content}
-  .cell{min-height:46px;display:flex;align-items:center;justify-content:center;border-radius:9px;position:relative}
-  .gutter{min-height:46px;font-weight:700;color:var(--muted);font-size:13px}
-  .tick{width:32px;height:32px;border-radius:50%;border:2px solid var(--line);display:grid;place-items:center;
-        font-size:15px;color:transparent;margin:auto}
+  .board{display:grid;gap:5px;align-items:start;min-width:min-content}
+  .cell{display:flex;align-items:center;justify-content:center;position:relative}
+
+  .gutter{min-height:38px}
+  .tick{width:30px;height:30px;border-radius:50%;border:2px solid var(--line);display:grid;place-items:center;font-size:14px;color:transparent;margin:auto}
   .tick.on{border-color:var(--happy);color:var(--happy);box-shadow:0 0 12px rgba(55,214,122,.35)}
-  .hcell{flex-direction:column;gap:7px;padding:4px 0}
-  .hcell .lbl{font-weight:800;font-size:17px}
-  .toggle{width:46px;height:64px;border-radius:14px;background:var(--panel2);border:1px solid var(--line);
-    position:relative;cursor:pointer;transition:.18s;padding:6px;-webkit-tap-highlight-color:transparent}
-  .knob{position:absolute;left:6px;right:6px;height:24px;border-radius:9px;
-    background:linear-gradient(180deg,#4a5488,#39406a);top:34px;
-    transition:top .18s cubic-bezier(.5,1.6,.5,1),background .18s;box-shadow:0 3px 8px rgba(0,0,0,.35)}
-  .toggle.on{background:linear-gradient(180deg,#4a3c12,#2a230d);border-color:var(--on);
-    box-shadow:0 0 0 1px var(--on),0 0 16px var(--onglow)}
+
+  /* switch header — staggered so adjacent toggles don't line up */
+  .hcell{flex-direction:column;gap:5px;padding-top:2px}
+  .hcell.low{margin-top:16px}                     /* the "low" of high-low-high-low */
+  .hcell .lbl{font-weight:800;font-size:16px}
+  .toggle{width:46px;height:62px;border-radius:14px;background:var(--panel2);border:1px solid var(--line);
+    position:relative;cursor:pointer;transition:.16s;padding:6px}
+  .knob{position:absolute;left:6px;right:6px;height:23px;border-radius:9px;background:linear-gradient(180deg,#4a5488,#39406a);
+    top:33px;transition:top .16s cubic-bezier(.5,1.6,.5,1),background .16s;box-shadow:0 3px 8px rgba(0,0,0,.35)}
+  .toggle.on{background:linear-gradient(180deg,#4a3c12,#2a230d);border-color:var(--on);box-shadow:0 0 0 1px var(--on),0 0 14px var(--onglow)}
   .toggle.on .knob{top:6px;background:linear-gradient(180deg,#ffd873,#f0b53c)}
-  .state{font-size:11px;font-weight:700;letter-spacing:1px;color:var(--muted)}
-  .state.onst{color:var(--on)}
-  .hdrline{grid-column:1/-1;height:1px;background:var(--line);margin:2px 0}
-  .rowhappy{background:var(--happybg)}
-  .chip{font-weight:800;font-size:13px;padding:6px 0;width:100%;max-width:66px;text-align:center;border-radius:999px;border:1px solid}
-  .chip.met{background:rgba(55,214,122,.16);border-color:var(--happy);color:#bff5d5}
-  .chip.unmet{background:rgba(255,107,129,.14);border-color:var(--sad);color:#ffc2cc}
-  .empty .dash{color:#3a4166;font-size:16px}
-  .colhi{box-shadow:inset 0 0 0 999px rgba(124,157,255,.10);border-radius:9px}
-  .hcell.colhi{box-shadow:none;background:rgba(124,157,255,.08)}
+  .movrow{display:flex;align-items:center;gap:4px}
+  .movrow .state{font-size:10px;font-weight:800;letter-spacing:.5px;color:var(--muted);min-width:26px;text-align:center}
+  .movrow .state.onst{color:var(--on)}
+  .mv{padding:2px 6px;font-size:12px;line-height:1;border-radius:7px;background:var(--panel2);border:1px solid var(--line);color:var(--muted)}
+  .mv:hover{color:var(--ink);border-color:var(--accent)}
+  .colhi .toggle{outline:2px solid rgba(124,157,255,.5)}
 
-  .legend{display:flex;gap:16px;flex-wrap:wrap;margin-top:12px;color:var(--muted);font-size:12.5px;align-items:center}
-  .legend .dot{display:inline-block;width:11px;height:11px;border-radius:50%;margin-right:6px;vertical-align:-1px}
-  .legend .g{background:var(--happy)} .legend .r{background:var(--sad)}
+  /* rule cells = little labelled circles; label immutable, color = live contribution */
+  .rrow{min-height:38px}
+  .circ{width:31px;height:31px;border-radius:50%;display:grid;place-items:center;font-weight:800;font-size:14px;
+    border:2px solid var(--line);color:var(--muted);background:var(--panel2)}
+  .circ.unmet{border-color:var(--sad);background:rgba(255,107,129,.14);color:#ffd0d7}
+  .circ.met{border-color:var(--happy);background:rgba(55,214,122,.16);color:#bff5d5}
+  .circ.sole{border-color:var(--bright);background:rgba(91,255,171,.30);color:#eafff3;box-shadow:0 0 10px rgba(91,255,171,.55)}
+  .nub{width:6px;height:6px;border-radius:50%;background:#333c63}
 
-  .hintbar{margin-top:12px;color:var(--muted);font-size:13px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+  .legend{display:flex;gap:14px;flex-wrap:wrap;margin-top:12px;color:var(--muted);font-size:12px;align-items:center;line-height:1.5}
+  .legend b{color:var(--ink)}
+  .mini{display:inline-grid;place-items:center;width:20px;height:20px;border-radius:50%;border:2px solid;font-size:11px;font-weight:800;vertical-align:-5px;margin-right:4px}
+  .mini.u{border-color:var(--sad);color:#ffd0d7;background:rgba(255,107,129,.14)}
+  .mini.m{border-color:var(--happy);color:#bff5d5;background:rgba(55,214,122,.16)}
+  .mini.s{border-color:var(--bright);color:#eafff3;background:rgba(91,255,171,.30)}
+
+  .hintbar{margin-top:12px;color:var(--muted);font-size:13px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
   .hintbar button{padding:8px 12px;font-size:13px}
+  #rightctl{display:none;align-items:center;gap:8px}
+  #rightread{font-variant-numeric:tabular-nums;font-weight:700;color:var(--accent)}
   .sharebox{display:none;margin-top:12px;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px 16px}
   .sharebox.show{display:block}
   .sharebox label{display:block;font-size:12px;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);margin:10px 0 5px}
   .sharebox label:first-child{margin-top:0}
   .sharebox .mut{text-transform:none;letter-spacing:0;opacity:.8}
   .sharebox .row{display:flex;gap:8px}
-  .sharebox input{flex:1;min-width:0;font:inherit;font-size:13px;color:var(--ink);background:var(--panel2);
-    border:1px solid var(--line);border-radius:9px;padding:9px 11px}
+  .sharebox input{flex:1;min-width:0;font:inherit;font-size:13px;color:var(--ink);background:var(--panel2);border:1px solid var(--line);border-radius:9px;padding:9px 11px}
   .sharebox input[readonly]{color:var(--accent);cursor:pointer}
   .sharebox .row button{padding:9px 14px;font-size:13px}
   .sharebox .msg{margin-top:10px;font-size:13px;color:var(--happy);min-height:18px}
   .sharebox .msg.err{color:var(--sad)}
-  .foot{margin-top:24px;color:var(--muted);font-size:12.5px;line-height:1.6}
+  .foot{margin-top:22px;color:var(--muted);font-size:12.5px;line-height:1.6}
   .foot b{color:var(--ink)}
   code{background:var(--panel2);padding:1px 6px;border-radius:6px;border:1px solid var(--line)}
 
-  /* rotate-to-landscape prompt for wide (6+ switch) boards */
   .rotate{display:none;position:fixed;inset:0;z-index:100;background:rgba(10,12,22,.96);
-    flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:30px;gap:6px}
+    flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:30px;gap:4px}
   .rotate.show{display:flex}
-  .rotate .glyph{font-size:56px;animation:spin 2.2s ease-in-out infinite;margin-bottom:8px}
+  .rotate .glyph{font-size:54px;animation:spin 2.2s ease-in-out infinite;margin-bottom:8px}
   @keyframes spin{0%,40%{transform:rotate(0)}60%,100%{transform:rotate(90deg)}}
   .rotate h3{margin:0;font-size:20px}
   .rotate p{margin:6px 0 16px;color:var(--muted);max-width:320px;font-size:14px}
@@ -120,10 +119,11 @@
     <h1>Switchboard<span class="sub">A logic puzzle in the shape of 3&#8209;SAT</span></h1>
     <div class="controls">
       <select id="difficulty" title="Difficulty">
-        <option value="easy">Easy · 4 switches</option>
-        <option value="medium" selected>Medium · 5 switches</option>
-        <option value="hard">Hard · 6 switches</option>
-        <option value="brutal">Brutal · 7 switches</option>
+        <option value="easy">Easy · 4</option>
+        <option value="medium" selected>Medium · 5</option>
+        <option value="hard">Hard · 6</option>
+        <option value="brutal">Brutal · 7</option>
+        <option value="extreme">Extreme · 8</option>
       </select>
       <button class="primary" id="newBtn">New puzzle</button>
     </div>
@@ -140,20 +140,21 @@
   </div>
 
   <div class="card">
-    <h2>Flip switches so every rule row has at least one green cell</h2>
+    <h2>Turn every rule's row green — each row needs one satisfied (green) circle</h2>
     <div class="boardscroll"><div class="board" id="board"></div></div>
     <div class="legend">
-      <span><span class="dot g"></span>demand met (true)</span>
-      <span><span class="dot r"></span>demand not met (false)</span>
-      <span>✓ = rule satisfied</span>
-      <span>· = rule ignores this switch</span>
+      <span><span class="mini m">1</span><b>green</b> = demand met now</span>
+      <span><span class="mini s">0</span><b>bright</b> = the only thing satisfying this row</span>
+      <span><span class="mini u">1</span><b>red</b> = demand not met</span>
+      <span>digit = what the rule wants (<b>1</b>=ON, <b>0</b>=OFF); tiny dot = switch not in this rule</span>
     </div>
   </div>
 
   <div class="hintbar">
     <button id="resetBtn">Reset</button>
     <button id="hintBtn">Hint</button>
-    <button id="shareBtn">Share this puzzle</button>
+    <button id="shareBtn">Share</button>
+    <span id="rightctl"><button id="incBtn">Right‑3 +1</button><span id="rightread"></span></span>
     <span id="hint"></span>
   </div>
 
@@ -168,35 +169,34 @@
   </div>
 
   <div class="foot">
-    <b>How to read it.</b> Each column is a switch; each row is a rule. A rule is a clause of up to three demands joined by OR, so a
-    row is satisfied the moment any one of its cells is green. Because demands sit under their switch, you can scan a column to see
-    every rule that switch touches — and predict which cells a flip turns red↔green.
+    <b>Reading a circle.</b> The digit never changes — it's what the rule demands of that switch (1 = wants it ON, 0 = wants it OFF).
+    The colour is live: red means the switch doesn't currently meet that demand, green means it does, and bright green means this cell
+    is the <i>only</i> reason its row is satisfied right now (flip that switch and the row breaks). A tiny dot means the rule doesn't
+    care about that switch. Use ◀▶ under a switch to reorder columns; with 6+ switches, <b>Right‑3 +1</b> steps the three rightmost
+    columns through all eight ON/OFF combinations like a binary counter — reorder first to park the switches you want to brute‑force on the right.
     <br><br>
-    <b>How it maps to 3&#8209;SAT.</b> Switches are boolean variables, a demand is a literal, a row is a 3-literal clause, and the
-    board is those clauses joined by AND. Every puzzle has <b>exactly one solution</b>: a solution is planted, then rules are added —
-    each aimed at a wrong answer still standing — until only the intended arrangement survives. Pure deduction, no guessing.
+    <b>3&#8209;SAT.</b> Switches are variables, a circle is a literal, a row is a 3‑literal clause, the board is their AND. Every puzzle
+    has exactly one solution, planted then fenced in by rules until nothing else survives.
   </div>
 </div>
 
 <div class="rotate" id="rotate">
-  <div class="glyph">⟳</div>
-  <h3>Rotate to landscape</h3>
-  <p>This board has <span id="rotN">6</span> switches and needs the extra width. Turn your phone sideways to play.</p>
+  <div class="glyph">⟳</div><h3>Rotate to landscape</h3>
+  <p>This board has <span id="rotN">6</span> switches and needs the width. Turn your phone sideways to play.</p>
   <button id="rotateDismiss">Play in portrait anyway</button>
 </div>
 
 <script>
 const LETTERS = "ABCDEFGH".split("");
-const DIFF = { easy:{n:4}, medium:{n:5}, hard:{n:6}, brutal:{n:7} };
+const DIFF = { easy:{n:4}, medium:{n:5}, hard:{n:6}, brutal:{n:7}, extreme:{n:8} };
 const nowMs = ()=>Date.now();
 
-let state = { n:0, vars:[], clauses:[], flips:0,
+let state = { n:0, vars:[], clauses:[], colOrder:[], flips:0,
               startMs:null, solved:false, solvedMs:0, solveFlips:0 };
 let overlayDismissed=false;
 
 function randInt(x){ return Math.floor(Math.random()*x); }
 function clauseSatisfied(cl, a){ return cl.some(l => l.want === a[l.v]); }
-
 function survivors(n, clauses){
   const out=[];
   for(let mask=0; mask<(1<<n); mask++){
@@ -207,9 +207,8 @@ function survivors(n, clauses){
 }
 function generateUnique(n){
   const solution = Array.from({length:n}, ()=>Math.random()<0.5);
-  const clauses = []; const seen = new Set();
-  let guard = 0;
-  while(guard++ < 600){
+  const clauses = []; const seen = new Set(); let guard = 0;
+  while(guard++ < 800){
     const surv = survivors(n, clauses);
     const wrong = surv.filter(a => a.some((v,i)=>v!==solution[i]));
     if(wrong.length===0) break;
@@ -227,7 +226,7 @@ function generateUnique(n){
   return {clauses};
 }
 
-// ---- shareable codes (rules only; solution never stored) ----
+// share codes (rules only)
 function b64urlEncode(s){ return btoa(s).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,''); }
 function b64urlDecode(s){ s=s.replace(/-/g,'+').replace(/_/g,'/'); while(s.length%4)s+='='; return atob(s); }
 function encodePuzzle(n, clauses){
@@ -235,18 +234,13 @@ function encodePuzzle(n, clauses){
   return b64urlEncode(`${n};${body}`);
 }
 function decodePuzzle(code){
-  const raw = b64urlDecode(code.trim());
-  const semi = raw.indexOf(';');
+  const raw = b64urlDecode(code.trim()); const semi = raw.indexOf(';');
   const n = parseInt(raw.slice(0,semi),10);
   if(!(n>=1 && n<=8)) throw new Error('bad size');
   const clauses = raw.slice(semi+1).split('.').filter(Boolean).map(cs=>{
-    if(cs.length%2) throw new Error('bad clause');
-    const lits=[];
-    for(let i=0;i<cs.length;i+=2){
-      const v=parseInt(cs[i],10); const w=cs[i+1];
-      if(!(v>=0 && v<n) || (w!=='0'&&w!=='1')) throw new Error('bad literal');
-      lits.push({v, want:w==='1'});
-    }
+    if(cs.length%2) throw new Error('bad clause'); const lits=[];
+    for(let i=0;i<cs.length;i+=2){ const v=parseInt(cs[i],10); const w=cs[i+1];
+      if(!(v>=0 && v<n) || (w!=='0'&&w!=='1')) throw new Error('bad literal'); lits.push({v, want:w==='1'}); }
     return lits.sort((a,b)=>a.v-b.v);
   });
   if(!clauses.length) throw new Error('no rules');
@@ -259,8 +253,7 @@ function syncUrl(){
   const code = encodePuzzle(state.n, state.clauses);
   suppressHash=true;
   try{ history.replaceState(null,'','#p='+code); }catch(e){ location.hash='p='+code; }
-  suppressHash=false;
-  return code;
+  suppressHash=false; return code;
 }
 
 function resetRun(){
@@ -269,160 +262,147 @@ function resetRun(){
   document.getElementById('win').classList.remove('show');
   document.getElementById('hint').textContent="";
 }
-
 function loadPuzzle(n, clauses){
-  state.n=n; state.clauses=clauses;
+  state.n=n; state.clauses=clauses; state.colOrder=[...Array(n).keys()];
   resetRun();
   document.getElementById('difficulty').value=difficultyForN(n);
   overlayDismissed=false;
   render(); updateTimer(); updateOrient(); syncUrl();
 }
-function newPuzzle(){
-  const {n} = DIFF[document.getElementById('difficulty').value];
-  loadPuzzle(n, generateUnique(n).clauses);
-}
+function newPuzzle(){ const {n}=DIFF[document.getElementById('difficulty').value]; loadPuzzle(n, generateUnique(n).clauses); }
 
-function hiCol(i, on){
-  document.querySelectorAll(`[data-col='${i}']`).forEach(e=>e.classList.toggle('colhi', on));
-}
+function hiCol(v,on){ document.querySelectorAll(`[data-col='${v}']`).forEach(e=>e.classList.toggle('colhi',on)); }
 
-function flip(i){
-  state.vars[i]=!state.vars[i];
-  if(!state.solved) state.flips++;
-  render();
+function flip(v){ state.vars[v]=!state.vars[v]; if(!state.solved) state.flips++; render(); }
+function moveCol(pos,dir){
+  const j=pos+dir; if(j<0||j>=state.n) return;
+  const o=state.colOrder; [o[pos],o[j]]=[o[j],o[pos]]; render();
+}
+function incRight3(){
+  const n=state.n; if(n<6) return;
+  const vs=[state.colOrder[n-3],state.colOrder[n-2],state.colOrder[n-1]]; // MSB..LSB
+  let val=(state.vars[vs[0]]?4:0)+(state.vars[vs[1]]?2:0)+(state.vars[vs[2]]?1:0);
+  val=(val+1)%8; const bits=[(val>>2)&1,(val>>1)&1,val&1];
+  let changed=0; vs.forEach((v,k)=>{ const nb=!!bits[k]; if(state.vars[v]!==nb){state.vars[v]=nb;changed++;} });
+  if(!state.solved) state.flips+=changed; render();
 }
 
 function render(){
-  const n=state.n;
-  const board=document.getElementById('board');
-  board.style.gridTemplateColumns = `42px repeat(${n}, minmax(56px,1fr))`;
+  const n=state.n, order=state.colOrder, board=document.getElementById('board');
+  board.style.gridTemplateColumns = `34px repeat(${n}, minmax(46px,1fr))`;
   board.innerHTML="";
 
-  const corner=document.createElement('div'); corner.className='cell gutter'; board.appendChild(corner);
-  for(let i=0;i<n;i++){
-    const on=state.vars[i];
-    const c=document.createElement('div'); c.className='cell hcell'; c.dataset.col=i;
-    c.innerHTML=`<div class="lbl">${LETTERS[i]}</div>
+  // header row (staggered)
+  board.appendChild(Object.assign(document.createElement('div'),{className:'cell gutter'}));
+  order.forEach((v,pos)=>{
+    const on=state.vars[v];
+    const c=document.createElement('div'); c.className='cell hcell'+(pos%2?' low':''); c.dataset.col=v;
+    c.innerHTML=`<div class="lbl">${LETTERS[v]}</div>
       <div class="toggle ${on?'on':''}"><div class="knob"></div></div>
-      <div class="state ${on?'onst':''}">${on?'ON':'OFF'}</div>`;
-    c.querySelector('.toggle').addEventListener('click',()=>flip(i));
-    c.addEventListener('mouseenter',()=>hiCol(i,true));
-    c.addEventListener('mouseleave',()=>hiCol(i,false));
+      <div class="movrow">
+        <button class="mv" data-mv="-1" ${pos===0?'disabled':''}>◀</button>
+        <span class="state ${on?'onst':''}">${on?'ON':'OFF'}</span>
+        <button class="mv" data-mv="1" ${pos===n-1?'disabled':''}>▶</button>
+      </div>`;
+    c.querySelector('.toggle').addEventListener('click',()=>flip(v));
+    c.querySelectorAll('.mv').forEach(btn=>btn.addEventListener('click',e=>{e.stopPropagation();moveCol(pos,parseInt(btn.dataset.mv,10));}));
+    c.addEventListener('mouseenter',()=>hiCol(v,true));
+    c.addEventListener('mouseleave',()=>hiCol(v,false));
     board.appendChild(c);
-  }
-  board.appendChild(Object.assign(document.createElement('div'),{className:'hdrline'}));
-
-  let happy=0;
-  state.clauses.forEach(cl=>{
-    const sat=clauseSatisfied(cl,state.vars); if(sat)happy++;
-    const byVar={}; cl.forEach(l=>byVar[l.v]=l);
-    const tick=document.createElement('div'); tick.className='cell gutter';
-    tick.innerHTML=`<div class="tick ${sat?'on':''}">${sat?'✓':''}</div>`;
-    if(sat) tick.classList.add('rowhappy');
-    board.appendChild(tick);
-    for(let i=0;i<n;i++){
-      const c=document.createElement('div'); c.dataset.col=i;
-      const d=byVar[i];
-      if(d){
-        const met=d.want===state.vars[i];
-        c.className='cell demand';
-        c.innerHTML=`<span class="chip ${met?'met':'unmet'}">${d.want?'ON':'OFF'}</span>`;
-      } else { c.className='cell empty'; c.innerHTML='<span class="dash">·</span>'; }
-      if(sat) c.classList.add('rowhappy');
-      board.appendChild(c);
-    }
   });
 
-  const total=state.clauses.length;
-  const onCount=state.vars.filter(Boolean).length;
+  // rules
+  let happy=0;
+  state.clauses.forEach(cl=>{
+    const metVs = cl.filter(l=>l.want===state.vars[l.v]).map(l=>l.v);
+    const sat=metVs.length>0; if(sat)happy++;
+    const sole = metVs.length===1 ? metVs[0] : -1;
+    const byVar={}; cl.forEach(l=>byVar[l.v]=l);
+    const tick=document.createElement('div'); tick.className='cell gutter rrow';
+    tick.innerHTML=`<div class="tick ${sat?'on':''}">${sat?'✓':''}</div>`;
+    board.appendChild(tick);
+    order.forEach(v=>{
+      const c=document.createElement('div'); c.className='cell rrow'; c.dataset.col=v;
+      const d=byVar[v];
+      if(!d){ c.innerHTML='<span class="nub"></span>'; }
+      else{
+        const met=d.want===state.vars[v];
+        const cls = !met ? 'unmet' : (v===sole ? 'sole' : 'met');
+        c.innerHTML=`<span class="circ ${cls}">${d.want?1:0}</span>`;
+      }
+      board.appendChild(c);
+    });
+  });
 
-  // latch solved the first time every rule is happy
+  const total=state.clauses.length, onCount=state.vars.filter(Boolean).length;
   if(happy===total && total>0 && !state.solved){
-    state.solved=true;
-    state.solvedMs = state.startMs ? (nowMs()-state.startMs) : 0;
-    state.solveFlips = state.flips;
-    const w=document.getElementById('win');
-    document.getElementById('winText').textContent =
-      `Solved in ${fmt(state.solvedMs)} · ${state.solveFlips} flip${state.solveFlips===1?'':'s'} — the one and only solution.`;
-    w.classList.add('show');
+    state.solved=true; state.solvedMs=state.startMs?(nowMs()-state.startMs):0; state.solveFlips=state.flips;
+    document.getElementById('winText').textContent=`Solved in ${fmt(state.solvedMs)} · ${state.solveFlips} flip${state.solveFlips===1?'':'s'} — the one and only solution.`;
+    document.getElementById('win').classList.add('show');
   }
-
   document.getElementById('score').textContent=`${happy} / ${total}`;
   document.getElementById('oncount').textContent=onCount;
   document.getElementById('flips').textContent = state.solved ? state.solveFlips : state.flips;
+
+  // right-3 control
+  const rc=document.getElementById('rightctl');
+  if(n>=6){ rc.style.display='inline-flex';
+    const vs=[order[n-3],order[n-2],order[n-1]];
+    const bits=vs.map(v=>state.vars[v]?1:0).join('');
+    document.getElementById('rightread').textContent=`${vs.map(v=>LETTERS[v]).join('')} = ${bits}`;
+  } else rc.style.display='none';
   updateTimer();
 }
 
 function fmt(ms){ const s=Math.floor(ms/1000); return Math.floor(s/60)+':'+String(s%60).padStart(2,'0'); }
-function updateTimer(){
-  let ms = state.solved ? state.solvedMs : (state.startMs ? nowMs()-state.startMs : 0);
-  const el=document.getElementById('timer'); if(el) el.textContent=fmt(ms);
-}
-setInterval(updateTimer, 250);
+function updateTimer(){ let ms=state.solved?state.solvedMs:(state.startMs?nowMs()-state.startMs:0);
+  const el=document.getElementById('timer'); if(el) el.textContent=fmt(ms); }
+setInterval(updateTimer,250);
 
 function updateOrient(){
-  const portrait = window.innerHeight > window.innerWidth;
-  const need = state.n>=6 && portrait && !overlayDismissed;
+  const portrait=window.innerHeight>window.innerWidth;
   document.getElementById('rotN').textContent=state.n;
-  document.getElementById('rotate').classList.toggle('show', need);
+  document.getElementById('rotate').classList.toggle('show', state.n>=6 && portrait && !overlayDismissed);
 }
-window.addEventListener('resize', updateOrient);
-window.addEventListener('orientationchange', ()=>setTimeout(updateOrient,150));
+window.addEventListener('resize',updateOrient);
+window.addEventListener('orientationchange',()=>setTimeout(updateOrient,150));
 
 function showHint(){
   const unhappy=state.clauses.filter(c=>!clauseSatisfied(c,state.vars));
-  if(unhappy.length===0){ document.getElementById('hint').textContent="Every rule is happy!"; return; }
+  if(!unhappy.length){ document.getElementById('hint').textContent="Every rule is happy!"; return; }
   let bestGain=-1,bestVar=-1;
-  for(let i=0;i<state.n;i++){
-    const test=[...state.vars]; test[i]=!test[i];
-    const now=state.clauses.filter(c=>!clauseSatisfied(c,test)).length;
-    const gain=unhappy.length-now;
-    if(gain>bestGain){bestGain=gain;bestVar=i;}
-  }
+  for(let i=0;i<state.n;i++){ const t=[...state.vars]; t[i]=!t[i];
+    const now=state.clauses.filter(c=>!clauseSatisfied(c,t)).length; const gain=unhappy.length-now;
+    if(gain>bestGain){bestGain=gain;bestVar=i;} }
   const dir=!state.vars[bestVar]?'ON':'OFF';
-  document.getElementById('hint').textContent =
-    bestGain>0 ? `Try flipping ${LETTERS[bestVar]} to ${dir}.`
-              : `You may need more than one flip — start by trying ${LETTERS[bestVar]} to ${dir}.`;
+  document.getElementById('hint').textContent = bestGain>0
+    ? `Try flipping ${LETTERS[bestVar]} to ${dir}.` : `Start by trying ${LETTERS[bestVar]} to ${dir}.`;
 }
-
-function showMsg(t,isErr){ const m=document.getElementById('shareMsg'); m.textContent=t; m.classList.toggle('err',!!isErr); }
-function copyField(id){
-  const el=document.getElementById(id); el.focus(); el.select();
-  const ok=()=>showMsg('Copied to clipboard.',false);
-  const manual=()=>showMsg('Selected — press '+(/Mac|iP/.test(navigator.platform)?'⌘':'Ctrl')+'+C.',false);
-  if(navigator.clipboard&&navigator.clipboard.writeText){ navigator.clipboard.writeText(el.value).then(ok).catch(manual); }
-  else { try{ document.execCommand('copy')?ok():manual(); }catch(e){ manual(); } }
-}
+function showMsg(t,e){ const m=document.getElementById('shareMsg'); m.textContent=t; m.classList.toggle('err',!!e); }
+function copyField(id){ const el=document.getElementById(id); el.focus(); el.select();
+  const ok=()=>showMsg('Copied to clipboard.',false), man=()=>showMsg('Selected — press '+(/Mac|iP/.test(navigator.platform)?'⌘':'Ctrl')+'+C.',false);
+  if(navigator.clipboard&&navigator.clipboard.writeText) navigator.clipboard.writeText(el.value).then(ok).catch(man);
+  else { try{ document.execCommand('copy')?ok():man(); }catch(e){ man(); } } }
 
 document.getElementById('newBtn').addEventListener('click',newPuzzle);
 document.getElementById('difficulty').addEventListener('change',newPuzzle);
 document.getElementById('resetBtn').addEventListener('click',()=>{ resetRun(); render(); updateTimer(); });
 document.getElementById('hintBtn').addEventListener('click',showHint);
+document.getElementById('incBtn').addEventListener('click',incRight3);
 document.getElementById('rotateDismiss').addEventListener('click',()=>{ overlayDismissed=true; updateOrient(); });
-
-document.getElementById('shareBtn').addEventListener('click',()=>{
-  const box=document.getElementById('sharebox');
-  document.getElementById('codeField').value=syncUrl();
-  document.getElementById('urlField').value=location.href;
-  showMsg('',false); box.classList.toggle('show');
-});
+document.getElementById('shareBtn').addEventListener('click',()=>{ const box=document.getElementById('sharebox');
+  document.getElementById('codeField').value=syncUrl(); document.getElementById('urlField').value=location.href; showMsg('',false); box.classList.toggle('show'); });
 document.getElementById('copyCode').addEventListener('click',()=>copyField('codeField'));
 document.getElementById('copyUrl').addEventListener('click',()=>copyField('urlField'));
 document.querySelectorAll('#codeField,#urlField').forEach(el=>el.addEventListener('focus',()=>el.select()));
-document.getElementById('loadBtn').addEventListener('click',()=>{
-  const raw=document.getElementById('loadField').value.trim();
+document.getElementById('loadBtn').addEventListener('click',()=>{ const raw=document.getElementById('loadField').value.trim();
   if(!raw){ showMsg('Paste a code first.',true); return; }
-  const code = raw.includes('#p=') ? raw.split('#p=')[1].split(/[&\s]/)[0] : raw;
-  try{ const {n,clauses}=decodePuzzle(code); loadPuzzle(n,clauses);
-    document.getElementById('loadField').value=''; showMsg('Loaded! Same board your friend is looking at.',false); }
-  catch(e){ showMsg("That doesn't look like a valid puzzle code.",true); }
-});
+  const code=raw.includes('#p=')?raw.split('#p=')[1].split(/[&\s]/)[0]:raw;
+  try{ const {n,clauses}=decodePuzzle(code); loadPuzzle(n,clauses); document.getElementById('loadField').value=''; showMsg('Loaded! Same board your friend is looking at.',false); }
+  catch(e){ showMsg("That doesn't look like a valid puzzle code.",true); } });
 
-function tryLoadFromHash(){
-  const m=location.hash.match(/p=([A-Za-z0-9\-_]+)/);
-  if(!m) return false;
-  try{ const {n,clauses}=decodePuzzle(m[1]); loadPuzzle(n,clauses); return true; }catch(e){ return false; }
-}
+function tryLoadFromHash(){ const m=location.hash.match(/p=([A-Za-z0-9\-_]+)/); if(!m) return false;
+  try{ const {n,clauses}=decodePuzzle(m[1]); loadPuzzle(n,clauses); return true; }catch(e){ return false; } }
 window.addEventListener('hashchange',()=>{ if(!suppressHash) tryLoadFromHash(); });
 
 if(!tryLoadFromHash()) newPuzzle();
